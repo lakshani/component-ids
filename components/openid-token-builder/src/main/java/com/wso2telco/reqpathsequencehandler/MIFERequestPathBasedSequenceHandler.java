@@ -46,9 +46,7 @@ import org.wso2.carbon.identity.oauth.cache.SessionDataCacheKey;
 import org.wso2.carbon.identity.oauth.common.OAuthConstants;
 
 import com.wso2telco.gsma.authenticators.DataHolder;
-import com.wso2telco.gsma.authenticators.config.LOA;
-import com.wso2telco.gsma.authenticators.config.LOAConfig;
-import com.wso2telco.gsma.authenticators.config.LOA.MIFEAbstractAuthenticator;
+import com.wso2telco.gsma.authenticators.abcd.*;
 import com.wso2telco.util.AuthenticationHealper;
 
 // TODO: Auto-generated Javadoc
@@ -174,19 +172,19 @@ public class MIFERequestPathBasedSequenceHandler extends DefaultRequestPathBased
 		LinkedHashSet<?> acrs = this.getACRValues(request);
 		String selectedLOA = (String) acrs.iterator().next();
 
-		LOAConfig config = DataHolder.getInstance().getLOAConfig();
-		LOA loa = config.getLOA(selectedLOA);
+		AuthenticationLevels config = DataHolder.getInstance().getAuthenticationLevels();
+		AuthenticationLevel loa = config.getLOA(selectedLOA);
 		if (loa.getAuthenticators() == null) {
 			config.init();
 		}
 
-		List<MIFEAbstractAuthenticator> mifeAuthenticators = loa.getAuthenticators();
+		List<AuthenticationLevel.MIFEAbstractAuthenticator> mifeAuthenticators = loa.getAuthenticators();
 		SequenceConfig sequenceConfig = context.getSequenceConfig();
 
 		// Clear existing ReqPathAuthenticators list
 		sequenceConfig.setReqPathAuthenticators(new ArrayList<AuthenticatorConfig>());
 
-		for (MIFEAbstractAuthenticator mifeAuthenticator : mifeAuthenticators) {
+		for (AuthenticationLevel.MIFEAbstractAuthenticator mifeAuthenticator : mifeAuthenticators) {
 			AuthenticatorConfig authenticatorConfig = new AuthenticatorConfig();
 			authenticatorConfig.setName(mifeAuthenticator.getAuthenticator().getName());
 			authenticatorConfig.setApplicationAuthenticator(mifeAuthenticator.getAuthenticator());

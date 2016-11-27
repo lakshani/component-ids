@@ -462,7 +462,7 @@ public class MIFEOpenIDTokenBuilder implements
 		//List<Authenticator> authenticatorsList = null;
 
 		//TODO CODE COMMENTED#
-		//LOAConfig config = ConfigLoader.getInstance().getLoaConfig();
+		//LOAConfig config = ConfigLoader.getInstance().getAuthenticationLevels();
 		if (null != acr && !"".equals(acr) && !" ".equals(acr)) { //$NON-NLS-1$ //$NON-NLS-2$
 			//TODO CODE COMMENTED#
 			//authenticatorsList = config.getLOA(acr).getAuthentication().getAuthenticatorList()

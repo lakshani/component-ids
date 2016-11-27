@@ -32,6 +32,8 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
+import com.wso2telco.abcd.AuthenticationLevel;
+import com.wso2telco.abcd.AuthenticationLevels;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpResponse;
@@ -55,9 +57,6 @@ import com.wso2telco.sms.OutboundSMSMessageRequest;
 import com.wso2telco.sms.OutboundSMSTextMessage;
 import com.wso2telco.sms.SendSMSRequest;
 import com.wso2telco.utils.ConfigLoader;
-import com.wso2telco.utils.LOA;
-import com.wso2telco.utils.LOA.MIFEAbstractAuthenticator;
-import com.wso2telco.utils.LOAConfig;
 import com.wso2telco.utils.ReadMobileConnectConfig;
 
 //import org.json.JSONException;
@@ -949,8 +948,8 @@ public class Endpoints {
 		int statusCode = 500;
 		try {
 			log.info("Searching default Authenticator for acr: " + acr);
-			LOAConfig config = ConfigLoader.getInstance().getLoaConfig();
-			LOA loa = config.getLOA(acr);
+			AuthenticationLevels config = ConfigLoader.getInstance().getAuthenticationLevels();
+			AuthenticationLevel loa = config.getLOA(acr);
 
 			if (loa.getAuthenticators() == null) {
 				log.info("Authenticators null and calling config init");
@@ -986,9 +985,9 @@ public class Endpoints {
 	 *            name of the authenticator.
 	 * @return true if valid authenticator found.
 	 */
-	private String selectDefaultAuthenticator(List<MIFEAbstractAuthenticator> authenticators) {
+	private String selectDefaultAuthenticator(List<AuthenticationLevel.MIFEAbstractAuthenticator> authenticators) {
 		try {
-			for (MIFEAbstractAuthenticator a : authenticators) {
+			for (AuthenticationLevel.MIFEAbstractAuthenticator a : authenticators) {
 
 				String authenticatorName = a.getAuthenticator().getName();
 				if ("SMSAuthenticator".equalsIgnoreCase(authenticatorName)

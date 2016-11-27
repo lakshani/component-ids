@@ -15,7 +15,7 @@
  ******************************************************************************/
 package com.wso2telco.gsma.authenticators;
 
-import com.wso2telco.gsma.authenticators.config.LOAConfig;
+import com.wso2telco.gsma.authenticators.abcd.AuthenticationLevels;
 import com.wso2telco.gsma.authenticators.config.MobileConnectConfig;
 
 // TODO: Auto-generated Javadoc
@@ -25,7 +25,7 @@ import com.wso2telco.gsma.authenticators.config.MobileConnectConfig;
 public class DataHolder {
 
     /** The loa config. */
-    private LOAConfig loaConfig;
+    private AuthenticationLevels authenticationLevels;
     
     /** The mobile connect config. */
     private MobileConnectConfig mobileConnectConfig;
@@ -52,8 +52,8 @@ public class DataHolder {
      *
      * @param config the new LOA config
      */
-    public void setLOAConfig(LOAConfig config) {
-        this.loaConfig = config;
+    public void setAuthenticationLevels(AuthenticationLevels authenticationLevels) {
+        this.authenticationLevels = authenticationLevels;
     }
 
     /**
@@ -61,8 +61,8 @@ public class DataHolder {
      *
      * @return the LOA config
      */
-    public LOAConfig getLOAConfig() {
-        return loaConfig;
+    public AuthenticationLevels getAuthenticationLevels() {
+        return authenticationLevels;
     }
 
     /**

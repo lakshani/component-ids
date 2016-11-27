@@ -15,6 +15,7 @@
  ******************************************************************************/
 package com.wso2telco.gsma.authenticators.config;
 
+import com.wso2telco.gsma.authenticators.abcd.AuthenticationLevels;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.wso2.carbon.utils.CarbonUtils;
@@ -34,7 +35,7 @@ public class ConfigLoader {
     private Log log = LogFactory.getLog(ConfigLoader.class);
 
     /** The loa config. */
-    private LOAConfig loaConfig;
+    private AuthenticationLevels authenticationLevels;
     
     /** The mobile connect config. */
     private MobileConnectConfig mobileConnectConfig;
@@ -47,7 +48,7 @@ public class ConfigLoader {
      */
     private ConfigLoader() {
         try {
-            this.loaConfig = initLoaConfig();
+            this.authenticationLevels = initLoaConfig();
             this.mobileConnectConfig = initMConnectConfig();
         } catch (JAXBException e) {
             log.error("Error while initiating custom config files", e);
@@ -69,12 +70,12 @@ public class ConfigLoader {
      * @return the LOA config
      * @throws JAXBException the JAXB exception
      */
-    private LOAConfig initLoaConfig() throws JAXBException {
+    private AuthenticationLevels initLoaConfig() throws JAXBException {
         String configPath = CarbonUtils.getCarbonConfigDirPath() + File.separator + "LOA.xml";
         File file = new File(configPath);
-        JAXBContext ctx = JAXBContext.newInstance(LOAConfig.class);
+        JAXBContext ctx = JAXBContext.newInstance(AuthenticationLevels.class);
         Unmarshaller um = ctx.createUnmarshaller();
-        return  (LOAConfig) um.unmarshal(file);
+        return  (AuthenticationLevels) um.unmarshal(file);
     }
 
     /**
@@ -82,8 +83,8 @@ public class ConfigLoader {
      *
      * @return the loa config
      */
-    public LOAConfig getLoaConfig() {
-        return loaConfig;
+    public AuthenticationLevels getAuthenticationLevels() {
+        return authenticationLevels;
     }
 
     /**
