@@ -18,6 +18,9 @@ package com.wso2telco.gsma.authenticators.internal;
 import com.wso2telco.gsma.authenticators.abcd.Authentication;
 import com.wso2telco.gsma.authenticators.abcd.AuthenticationLevel;
 import com.wso2telco.gsma.authenticators.abcd.AuthenticationLevels;
+import com.wso2telco.gsma.authenticators.abcd.Authenticator;
+import com.wso2telco.gsma.authenticators.abcd.Authenticators;
+import com.wso2telco.gsma.authenticators.abcd.MIFEAuthentication;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.felix.scr.annotations.Activate;
@@ -28,6 +31,7 @@ import org.apache.felix.scr.annotations.ReferenceCardinality;
 import org.apache.felix.scr.annotations.ReferencePolicy;
 import org.osgi.service.component.ComponentContext;
 import org.wso2.carbon.identity.application.authentication.framework.ApplicationAuthenticator;
+import org.wso2.carbon.identity.application.authentication.framework.util.FrameworkUtils;
 import org.wso2.carbon.user.core.service.RealmService;
 
 import com.wso2telco.gsma.authenticators.*;
@@ -37,6 +41,7 @@ import com.wso2telco.gsma.authenticators.sms.SMSAuthenticator;
 import com.wso2telco.gsma.authenticators.ussd.USSDAuthenticator;
 import com.wso2telco.gsma.authenticators.ussd.USSDPinAuthenticator;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -105,7 +110,7 @@ public class CustomAuthenticatorServiceComponent {
         DataHolder.getInstance().setAuthenticationLevels(config);
 
         DataHolder.getInstance().setMobileConnectConfig(ConfigLoader.getInstance().getMobileConnectConfig());
-        Map<String, Authentication> authenticationMap = loadAuthenticationMap(config);
+        Map<String, MIFEAuthentication> authenticationMap = loadMIFEAuthenticatorMap(config);
         DataHolder.getInstance().setAuthenticationLevelMap(authenticationMap);
 
         if (log.isDebugEnabled()) {
@@ -158,15 +163,34 @@ public class CustomAuthenticatorServiceComponent {
         return realmService;
     }
 
-    private Map<String, Authentication> loadAuthenticationMap(AuthenticationLevels authenticationLevels) {
-        Map<String, Authentication> authenticationMap = new HashMap<>();
-        List<AuthenticationLevel> authenticationLevelsList = authenticationLevels.getAuthenticationLevelList();
-        for (AuthenticationLevel authenticationLevel: authenticationLevelsList) {
-            Authentication authentication = authenticationLevel.getAuthentication();
+    private Map<String, MIFEAuthentication> loadMIFEAuthenticatorMap(AuthenticationLevels authenticationLevels) {
+        Map<String, MIFEAuthentication> authenticatorMap = new HashMap<>();
+        List<AuthenticationLevel> authenticationLevelList = authenticationLevels.getAuthenticationLevelList();
+        for (AuthenticationLevel authenticationLevel : authenticationLevelList) {
+            MIFEAuthentication mifeAuthentication = new MIFEAuthentication();
             String authenticationLevelValue = authenticationLevel.getLevel();
-            authenticationMap.put(authenticationLevelValue, authentication);
+            Authentication authentication = authenticationLevel.getAuthentication();
+            Authenticators authenticators = authentication.getAuthenticators();
+            String levelToFallBack = authentication.getLevelToFallback();
+            List<Authenticator> authenticatorList = authenticators.getAuthenticators();
+            List<MIFEAuthentication.MIFEAbstractAuthenticator> mifeAuthenticationList = new ArrayList<>();
+            for (Authenticator authenticator : authenticatorList) {
+                MIFEAuthentication.MIFEAbstractAuthenticator mifeAuthenticator =
+                        new MIFEAuthentication.MIFEAbstractAuthenticator();
+                mifeAuthenticator.setAuthenticator(authenticator.getAuthenticatorName());
+//
+                mifeAuthenticator.setOnFailAction(authenticator.getOnfail());
+                mifeAuthenticator.setSupportFlow(authenticator.getSupportiveFlow());
+                mifeAuthenticationList.add(mifeAuthenticator);
+            }
+            mifeAuthentication.setLevelToFail(levelToFallBack);
+            mifeAuthentication.setAuthenticatorList(mifeAuthenticationList);
+            authenticatorMap.put(authenticationLevelValue, mifeAuthentication);
+            //	String authenticationLevelValue = authenticationLevel.getLevel();
+            //	authenticationMap.put(authenticationLevelValue, authentication);
         }
-        return authenticationMap;
+        return  authenticatorMap;
     }
+
 
 }

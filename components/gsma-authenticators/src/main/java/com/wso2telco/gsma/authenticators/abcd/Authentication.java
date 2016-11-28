@@ -22,15 +22,15 @@ import java.util.List;
 
 public class Authentication {
 	private String LevelToFallback;
-	private List<Authenticators> authenticatorsList;
+	private Authenticators authenticators;
 
 	@XmlElement(name = "Authenticators")
-	public List<Authenticators> getAuthenticatorsList() {
-		return authenticatorsList;
+	public Authenticators getAuthenticators() {
+		return authenticators;
 	}
 
-	public void setAuthenticatorsList(List<Authenticators> authenticatorsList) {
-		this.authenticatorsList = authenticatorsList;
+	public void setAuthenticators(Authenticators authenticators) {
+		this.authenticators = authenticators;
 	}
 
 	@XmlElement(name = "LevelToFallback")

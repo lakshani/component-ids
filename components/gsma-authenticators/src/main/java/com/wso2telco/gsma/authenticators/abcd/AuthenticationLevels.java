@@ -17,28 +17,4 @@ public class AuthenticationLevels {
         this.authenticationLevelList = authenticationLevelList;
     }
 
-    /**
-     * Gets the loa.
-     *
-     * @param level the level
-     * @return the loa
-     */
-    public AuthenticationLevel getLOA(String level) {
-        for (AuthenticationLevel loa : authenticationLevelList) {
-            if (loa.getLevel().equals(level)) {
-                return loa;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Inits the.
-     */
-    public void init() {
-        for (AuthenticationLevel loa : authenticationLevelList) {
-            loa.init();
-        }
-    }
-
 }
