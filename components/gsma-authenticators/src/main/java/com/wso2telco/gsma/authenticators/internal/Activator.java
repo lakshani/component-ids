@@ -17,6 +17,8 @@
  */
 package com.wso2telco.gsma.authenticators.internal ;
 
+import com.wso2telco.gsma.authenticators.abcd.Authentication;
+import com.wso2telco.gsma.authenticators.abcd.AuthenticationLevel;
 import com.wso2telco.gsma.authenticators.abcd.AuthenticationLevels;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -39,6 +41,10 @@ import com.wso2telco.gsma.authenticators.ussd.USSDAuthenticator;
 import com.wso2telco.gsma.authenticators.ussd.USSDPinAuthenticator;
 
 import org.osgi.framework.BundleActivator;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * This is one of the first bundles that start in Carbon.
@@ -91,7 +97,8 @@ public class Activator implements BundleActivator {
          DataHolder.getInstance().setAuthenticationLevels(config);
 
          DataHolder.getInstance().setMobileConnectConfig(ConfigLoader.getInstance().getMobileConnectConfig());
-         
+	    Map<String, Authentication> authenticationMap = loadAuthenticationMap(config);
+	    DataHolder.getInstance().setAuthenticationLevelMap(authenticationMap);
          if (log.isDebugEnabled()) {
          log.debug("HHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHHH__________0003");
          }
@@ -114,4 +121,14 @@ public class Activator implements BundleActivator {
 		
 	}
 
+	private Map<String, Authentication> loadAuthenticationMap(AuthenticationLevels authenticationLevels) {
+		Map<String, Authentication> authenticationMap = new HashMap<>();
+		List<AuthenticationLevel> authenticationLevelsList = authenticationLevels.getAuthenticationLevelList();
+		for (AuthenticationLevel authenticationLevel: authenticationLevelsList) {
+			Authentication authentication = authenticationLevel.getAuthentication();
+			String authenticationLevelValue = authenticationLevel.getLevel();
+			authenticationMap.put(authenticationLevelValue, authentication);
+		}
+		return authenticationMap;
+	}
 }

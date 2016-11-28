@@ -15,6 +15,8 @@
  ******************************************************************************/
 package com.wso2telco.gsma.authenticators.internal;
 
+import com.wso2telco.gsma.authenticators.abcd.Authentication;
+import com.wso2telco.gsma.authenticators.abcd.AuthenticationLevel;
 import com.wso2telco.gsma.authenticators.abcd.AuthenticationLevels;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -34,6 +36,10 @@ import com.wso2telco.gsma.authenticators.headerenrich.HeaderEnrichmentAuthentica
 import com.wso2telco.gsma.authenticators.sms.SMSAuthenticator;
 import com.wso2telco.gsma.authenticators.ussd.USSDAuthenticator;
 import com.wso2telco.gsma.authenticators.ussd.USSDPinAuthenticator;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -99,6 +105,8 @@ public class CustomAuthenticatorServiceComponent {
         DataHolder.getInstance().setAuthenticationLevels(config);
 
         DataHolder.getInstance().setMobileConnectConfig(ConfigLoader.getInstance().getMobileConnectConfig());
+        Map<String, Authentication> authenticationMap = loadAuthenticationMap(config);
+        DataHolder.getInstance().setAuthenticationLevelMap(authenticationMap);
 
         if (log.isDebugEnabled()) {
             log.debug("Custom Application Authenticator bundle is activated");
@@ -148,6 +156,17 @@ public class CustomAuthenticatorServiceComponent {
      */
     public static RealmService getRealmService() {
         return realmService;
+    }
+
+    private Map<String, Authentication> loadAuthenticationMap(AuthenticationLevels authenticationLevels) {
+        Map<String, Authentication> authenticationMap = new HashMap<>();
+        List<AuthenticationLevel> authenticationLevelsList = authenticationLevels.getAuthenticationLevelList();
+        for (AuthenticationLevel authenticationLevel: authenticationLevelsList) {
+            Authentication authentication = authenticationLevel.getAuthentication();
+            String authenticationLevelValue = authenticationLevel.getLevel();
+            authenticationMap.put(authenticationLevelValue, authentication);
+        }
+        return authenticationMap;
     }
 
 }

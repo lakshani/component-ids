@@ -13,58 +13,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  ******************************************************************************/
-package com.wso2telco.gsma.authenticators.config;
+package com.wso2telco.gsma.authenticators.abcd;
 
 import javax.xml.bind.annotation.XmlAttribute;
-import javax.xml.bind.annotation.XmlValue;
+import javax.xml.bind.annotation.XmlElement;
 
-// TODO: Auto-generated Javadoc
-/**
- * The Class Authenticator.
- */
-public class Authenticator {
+import java.util.List;
 
-	/** The onfail. */
-	private String onfail;
-	
-	/** The authenticator name. */
-	private String authenticatorName;
+public class Authentication {
+	private String LevelToFallback;
+	private List<Authenticators> authenticatorsList;
 
-	/**
-	 * Gets the onfail.
-	 *
-	 * @return the onfail
-	 */
-	@XmlAttribute
-	public String getOnfail() {
-		return onfail;
+	@XmlElement(name = "Authenticators")
+	public List<Authenticators> getAuthenticatorsList() {
+		return authenticatorsList;
 	}
 
-	/**
-	 * Sets the onfail.
-	 *
-	 * @param onfail the new onfail
-	 */
-	public void setOnfail(String onfail) {
-		this.onfail = onfail;
+	public void setAuthenticatorsList(List<Authenticators> authenticatorsList) {
+		this.authenticatorsList = authenticatorsList;
 	}
 
-	/**
-	 * Gets the authenticator name.
-	 *
-	 * @return the authenticator name
-	 */
-	@XmlValue
-	public String getAuthenticatorName() {
-		return authenticatorName;
+	@XmlElement(name = "LevelToFallback")
+	public String getLevelToFallback() {
+		return LevelToFallback;
 	}
 
-	/**
-	 * Sets the authenticator name.
-	 *
-	 * @param authName the new authenticator name
-	 */
-	public void setAuthenticatorName(String authName) {
-		this.authenticatorName = authName;
+	public void setLevelToFallback(String levelToFallback) {
+		LevelToFallback = levelToFallback;
 	}
+
 }

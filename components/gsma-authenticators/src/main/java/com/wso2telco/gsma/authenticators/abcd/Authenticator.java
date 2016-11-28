@@ -13,38 +13,42 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  ******************************************************************************/
-package com.wso2telco.gsma.authenticators.config;
+package com.wso2telco.gsma.authenticators.abcd;
 
-import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlValue;
 
-import java.util.List;
+@XmlRootElement(name = "Authenticator")
+public class Authenticator {
+	private String onfail;
+	private String supportiveFlow;
+	private String authenticatorName;
 
-// TODO: Auto-generated Javadoc
-/**
- * The Class Authenticators.
- */
-public class Authenticators {
-
-	/** The authenticators. */
-	private List<Authenticator> authenticators;
-
-	/**
-	 * Gets the authenticators.
-	 *
-	 * @return the authenticators
-	 */
-	@XmlElement(name = "Authenicator")
-	public List<Authenticator> getAuthenticators() {
-		return authenticators;
+	@XmlAttribute
+	public String getOnfail() {
+		return onfail;
 	}
 
-	/**
-	 * Sets the authenticators.
-	 *
-	 * @param authenticators the new authenticators
-	 */
-	public void setAuthenticators(List<Authenticator> authenticators) {
-		this.authenticators = authenticators;
+	public void setOnfail(String onfail) {
+		this.onfail = onfail;
 	}
 
+	@XmlAttribute
+	public String getSupportiveFlow() {
+		return supportiveFlow;
+	}
+
+	public void setSupportiveFlow(String supportiveFlow) {
+		this.supportiveFlow = supportiveFlow;
+	}
+
+	@XmlValue
+	public String getAuthenticatorName() {
+		return authenticatorName;
+	}
+
+	public void setAuthenticatorName(String authName) {
+		this.authenticatorName = authName;
+	}
 }

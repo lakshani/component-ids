@@ -176,7 +176,9 @@ public class LOACompositeAuthenticator implements ApplicationAuthenticator,
 
 
         }else{
-		AuthenticationLevels config = DataHolder.getInstance().getAuthenticationLevels();
+	        AuthenticationLevels config = DataHolder.getInstance().getAuthenticationLevels();
+	        Map<String, Authentication> authenticationMap = DataHolder.getInstance().getAuthenticationLevelMap();
+	   //     Authentication selectedAuthentication = authenticationMap.get(selectedLOA);
 		AuthenticationLevel loa = config.getLOA(selectedLOA);
 		if (loa.getAuthenticators() == null) {
 			config.init();
@@ -192,8 +194,16 @@ public class LOACompositeAuthenticator implements ApplicationAuthenticator,
 		int stepOrder = 2;
 
 		while (true) {
+//			List<Authenticators> authenticatorsList = selectedAuthentication.getAuthenticatorsList();
+//            for (int i = 0; i < authenticatorsList.size(); i++) {
+//                Authenticators authenticators = authenticatorsList.get(i);
+//                List<Authenticator> authenticatorList = authenticators.getAuthenticators();
+//                for (int j = 0; j < authenticatorList.size(); j++) {
+//                    Authenticato
+//                }
+//            }
 			List<AuthenticationLevel.MIFEAbstractAuthenticator> authenticators = loa.getAuthenticators();
-			String fallBack = loa.getAuthentication().getFallbackLevel();
+			String fallBack = loa.getAuthentication().getLevelToFallback();
 
 			for (AuthenticationLevel.MIFEAbstractAuthenticator authenticator : authenticators) {
 				StepConfig stepConfig = new StepConfig();

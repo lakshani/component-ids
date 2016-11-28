@@ -15,8 +15,11 @@
  ******************************************************************************/
 package com.wso2telco.gsma.authenticators;
 
+import com.wso2telco.gsma.authenticators.abcd.Authentication;
 import com.wso2telco.gsma.authenticators.abcd.AuthenticationLevels;
 import com.wso2telco.gsma.authenticators.config.MobileConnectConfig;
+
+import java.util.Map;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -29,6 +32,8 @@ public class DataHolder {
     
     /** The mobile connect config. */
     private MobileConnectConfig mobileConnectConfig;
+
+    private Map<String, Authentication> authenticationLevelMap = null;
 
     /** The this instance. */
     private static DataHolder thisInstance = new DataHolder();
@@ -81,5 +86,14 @@ public class DataHolder {
      */
     public void setMobileConnectConfig(MobileConnectConfig mobileConnectConfig) {
         this.mobileConnectConfig = mobileConnectConfig;
+    }
+
+    public Map<String, Authentication> getAuthenticationLevelMap() {
+        return authenticationLevelMap;
+    }
+
+    public void setAuthenticationLevelMap(
+            Map<String, Authentication> authenticationLevelMap) {
+        this.authenticationLevelMap = authenticationLevelMap;
     }
 }
